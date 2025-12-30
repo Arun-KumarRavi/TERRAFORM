@@ -1,0 +1,32 @@
+groups:
+  admins:
+    policies:
+      - arn:aws:iam::aws:policy/AdministratorAccess
+
+  developers:
+    policies:
+      - arn:aws:iam::aws:policy/AmazonEC2FullAccess
+
+  operations:
+    policies:
+      - arn:aws:iam::aws:policy/AmazonS3FullAccess
+
+  security:
+    policies:
+      - arn:aws:iam::aws:policy/SecurityAudit
+
+users:
+  - username: dev_john
+    group: developers
+    permissions:
+      - arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess
+
+  - username: ops_mike
+    group: operations
+    permissions:
+      - arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess
+
+  - username: sec_alice
+    group: security
+    permissions:
+      - arn:aws:iam::aws:policy/SecurityAudit
