@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>I FRAME YOUU - Coming Soon (Secure Demo)</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+  <style>
+    /* theme variables and styles kept from your previous design */
+    :root{
+      --pink-1: #fff5f8;
+      --pink-2: #ffe6f0;
+      --accent: #ff3e8d;
+      --accent-2: #ff99c8;
+      --card-bg: rgba(255,255,255,0.95);
+      --glass: rgba(255,255,255,0.68);
+      --panel-glass: rgba(255,245,248,0.95);
+      --shadow: 0 8px 24px rgba(0,0,0,0.12);
+      --radius: 14px;
+      --max-width: 1100px;
+      --backdrop: rgba(255,62,141,0.12);
+      --muted: #666;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:'Poppins',sans-serif;
+      background: linear-gradient(135deg,var(--pink-1),var(--pink-2));
+      color:#333;
+      min-height:100vh;
+      overflow-x:hidden;
+      padding:28px 20px 60px;
+      -webkit-font-smoothing:antialiased;
+    }
+    header{display:flex;align-items:center;justify-content:space-between;max-width:var(--max-width);margin:0 auto 12px;gap:12px}
+    h1{margin:0;font-family:'Playfair Display',serif;font-size:clamp(32px,6vw,56px);color:var(--accent);text-shadow:3px 3px 18px rgba(255,62,141,0.45)}
+    .tagline{margin:6px 0 0;font-size:14px;color:var(--muted);font-style:italic}
+    .auth-btn{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;border:none;padding:10px 16px;border-radius:999px;font-weight:600;cursor:pointer;box-shadow:0 6px 18px rgba(255,62,141,0.25);display:flex;align-items:center;gap:8px}
+    .auth-btn:hover{transform:translateY(-3px);box-shadow:0 10px 26px rgba(255,62,141,0.28)}
+    .container{max-width:var(--max-width);margin:0 auto;padding:0 12px}
+    .offers{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:18px;margin-top:6px}
+    .offer-card{background:var(--card-bg);padding:18px;border-radius:14px;box-shadow:var(--shadow);font-family:'Playfair Display',serif;font-weight:700;font-size:16px;cursor:pointer;transition:transform .32s ease,box-shadow .32s;border:2px solid transparent;text-align:center}
+    .offer-card:hover{transform:translateY(-8px) scale(1.03);box-shadow:0 12px 30px rgba(255,62,141,0.18);border-color:var(--accent);background:#fff0f6}
+    .countdown{margin:26px auto;display:inline-block;background:var(--accent);color:#fff;padding:12px 26px;border-radius:30px;font-weight:700;box-shadow:0 8px 22px rgba(255,62,141,0.24);cursor:pointer}
+    .lead-form{margin:28px auto 36px;background:var(--glass);padding:20px;border-radius:16px;max-width:460px;box-shadow:var(--shadow);text-align:left}
+    .lead-form input{width:100%;padding:10px 12px;margin:8px 0;border-radius:10px;border:1px solid rgba(0,0,0,0.08);font-size:14px}
+    .lead-form button{background:var(--accent);color:white;border:none;padding:10px 16px;border-radius:12px;cursor:pointer;font-weight:600}
+    .socials{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;text-align:center;margin-top:24px;margin-bottom:60px}
+    .socials a{color:white;padding:10px 16px;border-radius:20px;font-weight:700;text-decoration:none}
+    .instagram{background:#E1306C;box-shadow:0 8px 20px rgba(225,48,108,0.16)}
+    .whatsapp{background:#25D366;box-shadow:0 8px 20px rgba(37,211,102,0.12)}
+    footer{text-align:center;color:#777;margin-top:16px;font-size:13px}
+    #bgCanvas{position:fixed;inset:0;z-index:-1;pointer-events:none}
+
+    /* backdrop */
+    .backdrop{position:fixed;inset:0;z-index:1000;background:rgba(255,62,141,0.12);backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .28s ease}
+    .backdrop.show{opacity:1;pointer-events:auto}
+
+    /* modal */
+    .modal{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(.96);width:92%;max-width:520px;background:linear-gradient(180deg,rgba(255,255,255,0.98),rgba(255,240,246,0.98));border-radius:14px;box-shadow:0 20px 40px rgba(0,0,0,0.18);padding:18px;z-index:1100;opacity:0;visibility:hidden;transition:opacity .28s ease,transform .28s cubic-bezier(.2,.9,.24,1),visibility .28s}
+    .modal.show{opacity:1;visibility:visible;transform:translate(-50%,-50%) scale(1)}
+    .modal.small{max-width:360px}
+    .modal .close{float:right;border:none;background:transparent;font-size:18px;cursor:pointer;color:#666}
+    .modal .modal-body{display:flex;gap:12px;align-items:flex-start;margin-top:6px}
+    .lottie-small{width:84px;height:84px;border-radius:10px;overflow:hidden;background:white;flex-shrink:0}
+    .modal h2{margin:0 0 6px 0;color:var(--accent);font-size:20px;font-family:'Playfair Display',serif}
+    .modal input,.modal textarea,.modal select{width:100%;padding:10px;margin:8px 0;border-radius:10px;border:1px solid rgba(0,0,0,0.07)}
+    .primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;border:none;padding:10px 12px;border-radius:10px;font-weight:700;cursor:pointer;width:100%;margin-top:8px}
+    .muted-link{color:var(--accent);cursor:pointer;text-decoration:underline;background:transparent;border:none;padding:6px 0;font-weight:600;font-size:13px}
+    .field-row{position:relative}
+    .toggle-eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:transparent;border:none;cursor:pointer;font-size:16px;color:#7a7a7a}
+    .orders-table{width:100%;border-collapse:collapse;margin-top:8px;font-size:14px}
+    .orders-table th,.orders-table td{padding:8px 10px;border-bottom:1px solid rgba(0,0,0,0.06);text-align:left}
+    .orders-actions button{margin-right:6px}
+
+    /* admin */
+    .admin-app{position:fixed;inset:0;z-index:2000;background:linear-gradient(135deg,rgba(255,245,248,0.98),rgba(255,238,243,0.98));display:flex}
+    .admin-sidebar{width:260px;padding:22px;border-right:1px solid rgba(255,62,141,0.06);box-shadow:6px 0 24px rgba(0,0,0,0.06);background:linear-gradient(180deg,#fff,#fff7fb)}
+    .admin-sidebar h3{margin-top:12px;color:var(--accent);font-family:'Playfair Display',serif}
+    .admin-side-nav{margin-top:18px;display:flex;flex-direction:column;gap:10px}
+    .admin-side-nav button{background:transparent;border:none;padding:10px 12px;text-align:left;cursor:pointer;border-radius:8px;font-weight:600;color:#444}
+    .admin-side-nav button.active{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;box-shadow:0 8px 18px rgba(255,62,141,0.12)}
+    .admin-main{flex:1;padding:22px 26px;overflow:auto}
+    .admin-topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}
+    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:18px}
+    .card{background:var(--card-bg);padding:18px;border-radius:12px;box-shadow:var(--shadow);font-weight:700}
+    .card small{display:block;margin-top:6px;font-weight:500;color:var(--muted);font-size:13px}
+    .table-wrap{background:var(--card-bg);border-radius:12px;padding:12px;box-shadow:var(--shadow);margin-bottom:18px}
+    table.admin-table{width:100%;border-collapse:collapse;font-size:14px}
+    table.admin-table th,table.admin-table td{padding:8px 10px;border-bottom:1px solid rgba(0,0,0,0.06);text-align:left}
+    .small-muted{font-size:13px;color:var(--muted)}
+    .btn-ghost{background:transparent;border:1px solid rgba(0,0,0,0.08);padding:6px 8px;border-radius:8px;cursor:pointer}
+    .btn-danger{background:#ff5964;color:white;border:none;padding:6px 8px;border-radius:8px;cursor:pointer}
+
+    @media (max-width:900px){.admin-sidebar{display:none}.admin-app{flex-direction:column}}
+  </style>
+</head>
+<body>
+  <canvas id="bgCanvas"></canvas>
+
+  <!-- header -->
+  <header>
+    <div style="display:flex;flex-direction:column;align-items:flex-start;">
+      <h1>I FRAME YOUU</h1>
+      <div class="tagline">🎁 Customised Gifts for Every Occasion 🎁</div>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div id="welcomePlaceholder" style="display:none;font-weight:600;color:#4b4b4b;">
+        Welcome, <span id="welcomeName" style="color:var(--accent);font-family:'Playfair Display',serif"></span>
+      </div>
+      <button id="profileBtn" class="auth-btn" style="display:none;">Profile</button>
+      <button id="adminLaunchBtn" class="auth-btn" style="display:none;background:linear-gradient(90deg,#6b3bff,#a76bff);">Admin</button>
+      <button id="authBtn" class="auth-btn" aria-haspopup="true" aria-expanded="false">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="filter:brightness(1.1)">
+          <path d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5z" fill="white"/>
+          <path d="M4 20c0-4 4-7 8-7s8 3 8 7v1H4v-1z" fill="white"/>
+        </svg>
+        <span id="authBtnText">Login / Signup</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- main content -->
+  <main class="container" id="mainContent">
+    <div class="offers" id="offersGrid"></div>
+
+    <div style="text-align:center;margin-top:18px;">
+      <div class="countdown" id="countdown">Launching Soon...</div>
+      <div class="arrow-text">Click for the surprise 🎉</div>
+    </div>
+
+    <div class="lead-form" aria-labelledby="leadTitle">
+      <h3 id="leadTitle">Fill this to get 25% OFF after the launch 🚀</h3>
+      <form id="leadForm">
+        <input type="text" id="leadName" placeholder="Your Name" required>
+        <input type="email" id="leadEmail" placeholder="Your Email" required>
+        <input type="tel" id="leadPhone" placeholder="Your Phone Number" required>
+        <button type="submit">Notify Me</button>
+      </form>
+      <p id="thankyou" style="display:none;color:green;margin-top:10px;">✅ Thank you! We’ll keep you updated.</p>
+    </div>
+
+    <div class="socials">
+      <a href="https://www.instagram.com/iframeyouu?igsh=MWoyZHF3b215ZXdudA==" target="_blank" class="instagram">📸 Follow us on Instagram</a>
+      <a href="https://wa.me/919894280788" target="_blank" class="whatsapp">💬 Chat on WhatsApp</a>
+    </div>
+
+    <footer>© 2025 I FRAME YOUU. All Rights Reserved.</footer>
+  </main>
+
+  <div class="backdrop" id="backdrop"></div>
+
+  <!-- choice modal (view / order) -->
+  <div class="modal small" id="choiceModal" aria-hidden="true">
+    <button class="close" id="closeChoice">✕</button>
+    <div style="text-align:center;margin-top:6px;">
+      <h2 id="choiceTitle">What would you like to do?</h2>
+      <p class="small-muted" id="choiceSubtitle">Choose an action</p>
+      <div style="display:flex;gap:12px;justify-content:center;margin-top:12px;">
+        <button class="primary" id="choiceView">📸 View Images</button>
+        <button class="btn-ghost" id="choiceOrder" style="border:1px solid rgba(0,0,0,0.08)">🛒 Order Now</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- login modal -->
+  <div class="modal" id="loginModal" aria-hidden="true">
+    <button class="close" id="closeLogin">✕</button>
+    <div class="modal-body">
+      <div class="lottie-small">
+        <lottie-player src="https://assets4.lottiefiles.com/datafiles/XRVoUu3IX4sGWtiC3MPpFnJvZNq7lVWDCa8LSqgS/profile.json" background="transparent" speed="1" loop autoplay></lottie-player>
+      </div>
+      <div style="flex:1;">
+        <h2>Welcome back</h2>
+        <p class="small-muted">Log in with the email or phone you used for sign up.</p>
+        <input id="loginIdentifier" type="text" placeholder="Email or Phone">
+        <div class="field-row">
+          <input id="loginPassword" type="password" placeholder="Password">
+          <button class="toggle-eye" type="button" id="loginToggle">👁️</button>
+        </div>
+        <button class="primary" id="loginBtn">LOGIN</button>
+        <div style="margin-top:8px;display:flex;gap:8px;">
+          <button class="muted-link" id="gotoSignup">Create account</button>
+        </div>
+        <div id="loginError" class="small-muted" style="color:#b00020;display:none;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- signup modal -->
+  <div class="modal" id="signupModal" aria-hidden="true">
+    <button class="close" id="closeSignup">✕</button>
+    <div class="modal-body">
+      <div class="lottie-small">
+        <lottie-player src="https://assets2.lottiefiles.com/packages/lf20_jcikwtux.json" background="transparent" speed="1" loop autoplay></lottie-player>
+      </div>
+      <div style="flex:1;">
+        <h2>Create account</h2>
+        <p class="small-muted">We'll store your details locally (secure demo).</p>
+        <input id="suName" type="text" placeholder="Full name">
+        <input id="suEmail" type="email" placeholder="Email (required)">
+        <input id="suPhone" type="tel" placeholder="Phone">
+        <div class="field-row">
+          <input id="suPassword" type="password" placeholder="Password">
+          <button class="toggle-eye" type="button" id="suToggle">👁️</button>
+        </div>
+        <input id="suConfirm" type="password" placeholder="Confirm password">
+        <button class="primary" id="signupBtn">SIGN UP</button>
+        <div style="margin-top:8px;">
+          <button class="muted-link" id="gotoLogin">Already have an account?</button>
+        </div>
+        <div id="signupError" class="small-muted" style="color:#b00020;display:none;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- order modal (logged-in users) -->
+  <div class="modal" id="orderModal" aria-hidden="true">
+    <button class="close" id="closeOrder">✕</button>
+    <div class="modal-body" style="flex-direction:column;">
+      <div style="display:flex;gap:12px;align-items:center;width:100%;">
+        <div class="lottie-small">
+          <lottie-player src="https://assets2.lottiefiles.com/packages/lf20_jcikwtux.json" background="transparent" speed="1" loop autoplay></lottie-player>
+        </div>
+        <div style="flex:1;">
+          <h2 id="orderTitle">Place Order</h2>
+          <p class="small-muted" id="orderSubtitle">Fill address & payment to place order</p>
+        </div>
+      </div>
+
+      <div style="margin-top:8px;">
+        <label class="small-muted">Product</label>
+        <input id="orderProduct" readonly>
+
+        <label class="small-muted">Quantity</label>
+        <input id="orderQty" type="number" min="1" value="1">
+
+        <label class="small-muted">Price (₹) — enter price (you can fix later)</label>
+        <input id="orderPrice" type="number" min="0" placeholder="e.g. 499">
+
+        <label class="small-muted">Address</label>
+        <textarea id="orderAddress" rows="3" placeholder="Delivery address"></textarea>
+
+        <label class="small-muted">Payment method</label>
+        <select id="orderPayment">
+          <option value="upi">UPI (50% advance required)</option>
+          <option value="cod">Cash on Delivery (50% advance via UPI + rest COD)</option>
+        </select>
+
+        <div style="margin-top:10px;background:linear-gradient(90deg,#fff0f6,#fff);padding:10px;border-radius:10px;border:1px solid rgba(0,0,0,0.04);">
+          <strong>Payment breakdown:</strong>
+          <div id="paymentBreakdown" class="small-muted">50% advance, 50% on delivery.</div>
+        </div>
+
+        <div style="display:flex;gap:8px;margin-top:10px;">
+          <button class="primary" id="submitOrderBtn">Place Order</button>
+          <button class="btn-ghost" id="cancelOrderBtn">Cancel</button>
+        </div>
+
+        <div id="orderMsg" style="margin-top:8px;display:none;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- guest order prompt -->
+  <div class="modal small" id="guestOrderPrompt" aria-hidden="true">
+    <button class="close" id="closeGuestPrompt">✕</button>
+    <div style="text-align:center;margin-top:6px;">
+      <h2>Please log in</h2>
+      <p class="small-muted">You must have an account to place orders.</p>
+      <div style="display:flex;gap:12px;justify-content:center;margin-top:12px;">
+        <button class="primary" id="promptLoginBtn">Login</button>
+        <button class="btn-ghost" id="promptSignupBtn">Sign up</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- profile modal -->
+  <div class="modal" id="profileModal" aria-hidden="true">
+    <button class="close" id="closeProfile">✕</button>
+    <div class="modal-body" style="flex-direction:column;">
+      <div style="display:flex;gap:12px;align-items:center;width:100%;">
+        <div class="lottie-small">
+          <lottie-player src="https://assets7.lottiefiles.com/packages/lf20_sSF6EG.json" background="transparent" speed="1" loop autoplay></lottie-player>
+        </div>
+        <div style="flex:1;">
+          <h2 id="profileTitle">My Profile</h2>
+          <p class="small-muted">Edit your details below. Orders are saved locally.</p>
+        </div>
+      </div>
+
+      <div style="margin-top:8px;">
+        <label class="small-muted">Full name</label>
+        <input id="pName" type="text">
+        <label class="small-muted">Email</label>
+        <input id="pEmail" type="email" readonly>
+        <label class="small-muted">Phone</label>
+        <input id="pPhone" type="tel">
+
+        <div style="display:flex;gap:8px;margin-top:10px;">
+          <button class="primary" id="saveProfile">Save Changes</button>
+          <button class="btn-ghost" id="logoutFromProfile">Logout</button>
+        </div>
+
+        <hr style="margin:12px 0;border:none;border-top:1px solid rgba(0,0,0,0.06)">
+
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <h3 style="margin:0;font-size:16px">Order History</h3>
+        </div>
+
+        <table class="orders-table" id="profileOrdersTable">
+          <thead>
+            <tr><th>Product</th><th>Qty</th><th>Price</th><th>Date</th><th>Payment</th><th>Action</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- admin app -->
+  <div id="adminApp" style="display:none;">
+    <div class="admin-app">
+      <aside class="admin-sidebar">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:56px;height:56px;border-radius:10px;overflow:hidden;background:white;">
+            <lottie-player src="https://assets7.lottiefiles.com/packages/lf20_sSF6EG.json" background="transparent" speed="1" loop autoplay style="width:56px;height:56px"></lottie-player>
+          </div>
+          <div>
+            <div style="font-weight:700;color:var(--accent);font-family:'Playfair Display',serif">Admin</div>
+            <div class="small-muted" id="adminEmailShow">admin@iframeyouu.com</div>
+          </div>
+        </div>
+
+        <h3>Control Panel</h3>
+        <div class="admin-side-nav" id="adminNav">
+          <button class="active" data-view="dashboard">Dashboard</button>
+          <button data-view="users">Users</button>
+          <button data-view="orders">Orders</button>
+          <button data-view="offers">Offers</button>
+          <button id="exitAdmin" style="margin-top:18px;background:transparent;border:1px solid rgba(0,0,0,0.06);padding:8px;border-radius:8px;cursor:pointer;">Exit Admin</button>
+        </div>
+      </aside>
+
+      <section class="admin-main">
+        <div class="admin-topbar">
+          <div style="display:flex;flex-direction:column;">
+            <div style="font-weight:700;font-size:18px;">Admin Dashboard</div>
+            <div class="small-muted">Manage users, orders and offers</div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <div class="small-muted">Session: admin</div>
+            <button id="adminLogoutBtn" class="btn-ghost">Logout</button>
+          </div>
+        </div>
+
+        <div id="adminViews">
+          <div data-admin-view="dashboard">
+            <div class="cards">
+              <div class="card" id="cardUsers">
+                <div style="font-size:28px;" id="totalUsers">0</div>
+                <small>Total Users</small>
+              </div>
+              <div class="card" id="cardOrders">
+                <div style="font-size:28px;" id="totalOrders">0</div>
+                <small>Total Orders</small>
+              </div>
+              <div class="card" id="cardOffers">
+                <div style="font-size:28px;" id="totalOffers">0</div>
+                <small>Total Offers</small>
+              </div>
+            </div>
+
+            <div class="table-wrap">
+              <h4 style="margin:0 0 8px 0;">Recent Orders</h4>
+              <table class="admin-table" id="recentOrdersTable">
+                <thead><tr><th>Order ID</th><th>User</th><th>Product</th><th>Price</th><th>Date</th><th>Payment</th><th>Address</th><th>Action</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+
+            <div class="table-wrap">
+              <h4 style="margin:0 0 8px 0;">Recent Users</h4>
+              <table class="admin-table" id="recentUsersTable">
+                <thead><tr><th>User ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Action</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div data-admin-view="users" style="display:none;">
+            <div class="table-wrap">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <h4 style="margin:0">All Users</h4>
+                <div class="small-muted">Edit or delete any user</div>
+              </div>
+              <table class="admin-table" id="allUsersTable">
+                <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Action</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div data-admin-view="orders" style="display:none;">
+            <div class="table-wrap">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <h4 style="margin:0">All Orders</h4>
+                <div class="small-muted">Modify or remove orders</div>
+              </div>
+              <table class="admin-table" id="allOrdersTable">
+                <thead><tr><th>Order ID</th><th>User</th><th>Product</th><th>Price</th><th>Date</th><th>Payment</th><th>Address</th><th>Action</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div data-admin-view="offers" style="display:none;">
+            <div class="table-wrap">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <h4 style="margin:0">Manage Offers</h4>
+                <div class="small-muted">Changes persist locally and reflect on homepage</div>
+              </div>
+
+              <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;">
+                <input id="newOfferText" placeholder="Offer text e.g. 💡 Neon Lights" style="padding:8px;border-radius:8px;border:1px solid rgba(0,0,0,0.08);flex:1;">
+                <button class="primary" id="addOfferAdmin">Add Offer</button>
+              </div>
+
+              <table class="admin-table" id="offersTable">
+                <thead><tr><th>#</th><th>Offer</th><th>Action</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+    </div>
+  </div>
+
+  <script>
+    /* ---------------------------
+       Secure Auth helpers (Web Crypto SHA-256 + salt)
+       --------------------------- */
+    async function sha256Hex(str) {
+      const enc = new TextEncoder().encode(str);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', enc);
+      return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2,'0')).join('');
+    }
+
+    function genSaltHex(len = 16) {
+      const bytes = crypto.getRandomValues(new Uint8Array(len));
+      return Array.from(bytes).map(b => b.toString(16).padStart(2,'0')).join('');
+    }
+
+    /* ---------------------------
+       Storage keys & admin creds
+       --------------------------- */
+    const STORAGE_USERS = 'iframeyouu_users';
+    const STORAGE_SESSION = 'iframeyouu_session'; // stored in sessionStorage now
+    const STORAGE_ORDERS = 'iframeyouu_orders';
+    const STORAGE_OFFERS = 'iframeyouu_offers';
+
+    const ADMIN_EMAIL = 'admin@iframeyouu.com';
+    const ADMIN_PASS = 'admin123';
+
+    /* ---------------------------
+       DOM refs
+       --------------------------- */
+    const backdrop = document.getElementById('backdrop');
+
+    const authBtn = document.getElementById('authBtn');
+    const authBtnText = document.getElementById('authBtnText');
+    const loginModal = document.getElementById('loginModal');
+    const signupModal = document.getElementById('signupModal');
+    const profileModal = document.getElementById('profileModal');
+
+    const loginIdentifier = document.getElementById('loginIdentifier');
+    const loginPassword = document.getElementById('loginPassword');
+    const loginBtn = document.getElementById('loginBtn');
+    const loginError = document.getElementById('loginError');
+
+    const suName = document.getElementById('suName');
+    const suEmail = document.getElementById('suEmail');
+    const suPhone = document.getElementById('suPhone');
+    const suPassword = document.getElementById('suPassword');
+    const suConfirm = document.getElementById('suConfirm');
+    const signupBtn = document.getElementById('signupBtn');
+    const signupError = document.getElementById('signupError');
+
+    const gotoSignup = document.getElementById('gotoSignup');
+    const gotoLogin = document.getElementById('gotoLogin');
+    const closeLogin = document.getElementById('closeLogin');
+    const closeSignup = document.getElementById('closeSignup');
+
+    const choiceModal = document.getElementById('choiceModal');
+    const choiceTitle = document.getElementById('choiceTitle');
+    const choiceSubtitle = document.getElementById('choiceSubtitle');
+    const choiceView = document.getElementById('choiceView');
+    const choiceOrder = document.getElementById('choiceOrder');
+    const closeChoice = document.getElementById('closeChoice');
+
+    const orderModal = document.getElementById('orderModal');
+    const orderProduct = document.getElementById('orderProduct');
+    const orderQty = document.getElementById('orderQty');
+    const orderPrice = document.getElementById('orderPrice');
+    const orderAddress = document.getElementById('orderAddress');
+    const orderPayment = document.getElementById('orderPayment');
+    const paymentBreakdown = document.getElementById('paymentBreakdown');
+    const submitOrderBtn = document.getElementById('submitOrderBtn');
+    const cancelOrderBtn = document.getElementById('cancelOrderBtn');
+    const orderMsg = document.getElementById('orderMsg');
+
+    const guestOrderPrompt = document.getElementById('guestOrderPrompt');
+    const promptLoginBtn = document.getElementById('promptLoginBtn');
+    const promptSignupBtn = document.getElementById('promptSignupBtn');
+    const closeGuestPrompt = document.getElementById('closeGuestPrompt');
+
+    const profileBtn = document.getElementById('profileBtn');
+    const pName = document.getElementById('pName');
+    const pEmail = document.getElementById('pEmail');
+    const pPhone = document.getElementById('pPhone');
+    const saveProfile = document.getElementById('saveProfile');
+    const logoutFromProfile = document.getElementById('logoutFromProfile');
+    const profileOrdersTable = document.querySelector('#profileOrdersTable tbody');
+    const closeProfile = document.getElementById('closeProfile');
+
+    const welcomePlaceholder = document.getElementById('welcomePlaceholder');
+    const welcomeName = document.getElementById('welcomeName');
+
+    const offersGrid = document.getElementById('offersGrid');
+
+    const adminApp = document.getElementById('adminApp');
+    const adminLaunchBtn = document.getElementById('adminLaunchBtn');
+    const adminNavBtns = document.querySelectorAll('#adminNav button[data-view]');
+    const adminViews = document.querySelectorAll('[data-admin-view]');
+    const exitAdmin = document.getElementById('exitAdmin');
+    const adminLogoutBtn = document.getElementById('adminLogoutBtn');
+
+    const totalUsersEl = document.getElementById('totalUsers');
+    const totalOrdersEl = document.getElementById('totalOrders');
+    const totalOffersEl = document.getElementById('totalOffers');
+
+    const recentOrdersTable = document.querySelector('#recentOrdersTable tbody');
+    const recentUsersTable = document.querySelector('#recentUsersTable tbody');
+    const allUsersTable = document.querySelector('#allUsersTable tbody');
+    const allOrdersTable = document.querySelector('#allOrdersTable tbody');
+    const offersTable = document.querySelector('#offersTable tbody');
+
+    const addOfferAdmin = document.getElementById('addOfferAdmin');
+    const newOfferText = document.getElementById('newOfferText');
+
+    /* ---------------------------
+       Storage helpers
+       --------------------------- */
+    function loadJSON(key, fallback){
+      try{
+        const raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : fallback;
+      }catch(e){ return fallback; }
+    }
+    function saveJSON(key, obj){ localStorage.setItem(key, JSON.stringify(obj)); }
+
+    function loadUsers(){ return loadJSON(STORAGE_USERS, {}); }
+    function saveUsers(u){ saveJSON(STORAGE_USERS, u); }
+    function loadOrders(){ return loadJSON(STORAGE_ORDERS, {}); }
+    function saveOrders(o){ saveJSON(STORAGE_ORDERS, o); }
+    function loadOffers(){ return loadJSON(STORAGE_OFFERS, [
+      "📸 Photo Frames", "🎂 Birthday & Anniversary Gifts", "🎁 Corporate Gifting",
+      "🎇 Explosion Boxes", "💡 Neon Lights Customisable", "🍫 Chocolate Explosion Boxes",
+      "💐 Customised Flower Bouquets", "❤ Valentine’s Day Gifts", "👔 Men’s Custom Gift Combos",
+      "👑 Women’s Custom Gift Combos", "✨ And Much More"
+    ]); }
+    function saveOffers(of){ saveJSON(STORAGE_OFFERS, of); }
+
+    // session uses sessionStorage (expires on tab close)
+    function setSession(id){ sessionStorage.setItem(STORAGE_SESSION, id); updateUIOnSession(); }
+    function getSession(){ return sessionStorage.getItem(STORAGE_SESSION); }
+    function clearSession(){ sessionStorage.removeItem(STORAGE_SESSION); updateUIOnSession(); }
+
+    /* ---------------------------
+       Modal / backdrop utils
+       --------------------------- */
+    function showBackdrop(){ backdrop.classList.add('show'); }
+    function hideBackdrop(){ backdrop.classList.remove('show'); }
+
+    function openModal(modal){
+      showBackdrop();
+      modal.classList.add('show');
+    }
+    function closeModal(modal){
+      modal.classList.remove('show');
+      setTimeout(()=> { if(!document.querySelector('.modal.show')) hideBackdrop(); }, 220);
+    }
+
+    /* ---------------------------
+       Auth: signup/login (secure)
+       --------------------------- */
+    gotoSignup.addEventListener('click', ()=> { closeModal(loginModal); openModal(signupModal); });
+    gotoLogin.addEventListener('click', ()=> { closeModal(signupModal); openModal(loginModal); });
+    closeLogin.addEventListener('click', ()=> closeModal(loginModal));
+    closeSignup.addEventListener('click', ()=> closeModal(signupModal));
+    closeProfile.addEventListener('click', ()=> closeModal(profileModal));
+
+    signupBtn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      signupError.style.display = 'none';
+      const name = (suName.value || '').trim();
+      const email = (suEmail.value || '').trim().toLowerCase();
+      const phone = (suPhone.value || '').trim();
+      const pass = suPassword.value || '';
+      const conf = suConfirm.value || '';
+
+      if(!name || !email || !pass || !conf){ signupError.innerText = 'Please fill all required fields.'; signupError.style.display='block'; return; }
+      if(pass !== conf){ signupError.innerText = 'Passwords do not match.'; signupError.style.display='block'; return; }
+
+      const users = loadUsers();
+      const exists = Object.keys(users).find(k => users[k].email === email || (phone && users[k].phone === phone));
+      if(exists){ signupError.innerText = 'Account with this email/phone already exists.'; signupError.style.display='block'; return; }
+
+      const id = 'u' + Date.now();
+      const salt = genSaltHex(16);
+      const hashed = await sha256Hex(pass + salt);
+      users[id] = { id, name, email, phone, salt, passwordHash: hashed };
+      saveUsers(users);
+
+      const orders = loadOrders();
+      orders[id] = orders[id] || [];
+      saveOrders(orders);
+
+      setSession(id);
+      suName.value = suEmail.value = suPhone.value = suPassword.value = suConfirm.value = '';
+      closeModal(signupModal);
+      updateUIOnSession();
+    });
+
+    loginBtn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      loginError.style.display='none';
+      const ident = (loginIdentifier.value || '').trim().toLowerCase();
+      const pass = loginPassword.value || '';
+
+      if(!ident || !pass){ loginError.innerText='Enter both identifier and password.'; loginError.style.display='block'; return; }
+
+      // admin shortcut
+      if(ident === ADMIN_EMAIL && pass === ADMIN_PASS){
+        let users = loadUsers();
+        let adminId = Object.keys(users).find(k => users[k].email === ADMIN_EMAIL || users[k].isAdmin);
+        if(!adminId){
+          adminId = 'admin_' + Date.now();
+          const salt = genSaltHex(16);
+          const hashed = await sha256Hex(ADMIN_PASS + salt);
+          users[adminId] = { id: adminId, name: 'Administrator', email: ADMIN_EMAIL, phone:'', salt, passwordHash: hashed, isAdmin:true };
+          saveUsers(users);
+          const orders = loadOrders();
+          orders[adminId] = orders[adminId] || [];
+          saveOrders(orders);
+        }
+        setSession(adminId);
+        closeModal(loginModal);
+        updateUIOnSession();
+        openAdminApp();
+        return;
+      }
+
+      const users = loadUsers();
+      const foundId = Object.keys(users).find(k => {
+        const u = users[k];
+        return (u.email && u.email === ident) || (u.phone && u.phone === ident) || (k === ident);
+      });
+
+      if(!foundId){ loginError.innerText = 'No account found with that email/phone.'; loginError.style.display='block'; return; }
+
+      const user = users[foundId];
+      const computed = await sha256Hex(pass + (user.salt || ''));
+      if(computed !== user.passwordHash){ loginError.innerText = 'Incorrect password.'; loginError.style.display='block'; return; }
+
+      setSession(foundId);
+      loginIdentifier.value = loginPassword.value = '';
+      closeModal(loginModal);
+      updateUIOnSession();
+    });
+
+    /* ---------------------------
+       Offers rendering & click (choice popup)
+       --------------------------- */
+    function renderOffers(){
+      const offers = loadOffers();
+      offersGrid.innerHTML = '';
+      offers.forEach((o, idx) => {
+        const div = document.createElement('div');
+        div.className = 'offer-card';
+        div.textContent = o;
+        div.dataset.offerIndex = idx;
+        div.addEventListener('click', ()=> onOfferClick(o, idx));
+        offersGrid.appendChild(div);
+      });
+    }
+
+    let currentOffer = null;
+    function onOfferClick(offerText, offerIdx){
+      currentOffer = { text: offerText, idx: offerIdx };
+      choiceTitle.innerText = offerText;
+      choiceSubtitle.innerText = 'View images or place an order';
+      openModal(choiceModal);
+    }
+
+    choiceView.addEventListener('click', ()=>{
+      closeModal(choiceModal);
+      window.open("https://www.instagram.com/iframeyouu?igsh=MWoyZHF3b215ZXdudA==","_blank");
+    });
+
+    choiceOrder.addEventListener('click', ()=>{
+      closeModal(choiceModal);
+      const session = getSession();
+      if(!session){ openModal(guestOrderPrompt); return; }
+      openOrderModalForUser();
+    });
+
+    closeChoice.addEventListener('click', ()=> closeModal(choiceModal));
+
+    promptLoginBtn.addEventListener('click', ()=> { closeModal(guestOrderPrompt); openModal(loginModal); });
+    promptSignupBtn.addEventListener('click', ()=> { closeModal(guestOrderPrompt); openModal(signupModal); });
+    closeGuestPrompt.addEventListener('click', ()=> closeModal(guestOrderPrompt));
+
+    /* ---------------------------
+       Order modal: logged-in users
+       --------------------------- */
+    function openOrderModalForUser(){
+      const session = getSession();
+      if(!session) return alert('Not logged in');
+      orderProduct.value = currentOffer ? currentOffer.text : '';
+      orderQty.value = 1;
+      orderPrice.value = '';
+      const users = loadUsers();
+      if(users[session] && users[session].lastAddress) orderAddress.value = users[session].lastAddress;
+      else orderAddress.value = '';
+      orderPayment.value = 'upi';
+      updatePaymentBreakdown();
+      orderMsg.style.display='none';
+      openModal(orderModal);
+    }
+
+    orderPayment.addEventListener('change', updatePaymentBreakdown);
+    orderQty.addEventListener('input', updatePaymentBreakdown);
+    orderPrice.addEventListener('input', updatePaymentBreakdown);
+
+    function updatePaymentBreakdown(){
+      const qty = parseInt(orderQty.value) || 1;
+      const price = parseFloat(orderPrice.value) || 0;
+      const total = price * qty;
+      const advance = (total * 0.5).toFixed(2);
+      const remaining = (total - advance).toFixed(2);
+      paymentBreakdown.innerText = `Total ₹ ${total.toFixed(2)} — Advance (50%): ₹ ${advance} — Remaining (50%): ₹ ${remaining}.`;
+    }
+
+    cancelOrderBtn.addEventListener('click', ()=> closeModal(orderModal));
+
+    submitOrderBtn.addEventListener('click', ()=>{
+      const session = getSession();
+      if(!session) return alert('Not logged in');
+
+      const product = orderProduct.value || '';
+      const qty = parseInt(orderQty.value) || 1;
+      const price = parseFloat(orderPrice.value);
+      const address = (orderAddress.value || '').trim();
+      const payment = orderPayment.value;
+
+      if(!product || !price || price <= 0 || !address){
+        orderMsg.style.display='block';
+        orderMsg.style.color = '#b00020';
+        orderMsg.innerText = 'Please enter product price and delivery address.';
+        return;
+      }
+
+      const orders = loadOrders();
+      orders[session] = orders[session] || [];
+      const order = {
+        id: 'o' + Date.now(),
+        product,
+        qty,
+        price,
+        date: new Date().toISOString(),
+        paymentMethod: payment,
+        paymentBreakdown: { advance: +(price*qty*0.5).toFixed(2), remaining: +(price*qty*0.5).toFixed(2) },
+        address
+      };
+      orders[session].push(order);
+      saveOrders(orders);
+
+      // save last address to user profile
+      const users = loadUsers();
+      if(users[session]){
+        users[session].lastAddress = address;
+        saveUsers(users);
+      }
+
+      orderMsg.style.display='block';
+      orderMsg.style.color='green';
+      orderMsg.innerText = '✅ Order placed successfully!';
+      updateAdminData();
+      renderProfileOrders();
+
+      setTimeout(()=> closeModal(orderModal), 1300);
+    });
+
+    /* ---------------------------
+       Profile: load/save + orders rendering
+       --------------------------- */
+    profileBtn.addEventListener('click', ()=> openProfileModal());
+
+    function openProfileModal(){
+      const session = getSession();
+      if(!session) return alert('Not logged in');
+      const users = loadUsers();
+      const user = users[session];
+      pName.value = user.name || '';
+      pEmail.value = user.email || '';
+      pPhone.value = user.phone || '';
+      renderProfileOrders();
+      openModal(profileModal);
+    }
+
+    saveProfile.addEventListener('click', ()=>{
+      const session = getSession();
+      if(!session) return;
+      const users = loadUsers();
+      if(!users[session]) return;
+      users[session].name = pName.value.trim();
+      users[session].phone = pPhone.value.trim();
+      saveUsers(users);
+      updateUIOnSession();
+      alert('Profile saved.');
+    });
+
+    logoutFromProfile.addEventListener('click', ()=>{
+      if(confirm('Logout?')) { clearSession(); closeModal(profileModal); }
+    });
+
+    function renderProfileOrders(){
+      const session = getSession();
+      profileOrdersTable.innerHTML = '';
+      if(!session) return;
+      const orders = loadOrders();
+      const list = orders[session] || [];
+      list.slice().reverse().forEach(o => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${o.product}</td><td>${o.qty}</td><td>₹ ${o.price}</td><td>${new Date(o.date).toLocaleString()}</td><td>${o.paymentMethod.toUpperCase()}</td>
+          <td class="orders-actions">
+            <button class="btn-ghost" data-id="${o.id}" data-action="view">View</button>
+            <button class="btn-danger" data-id="${o.id}" data-action="del">Delete</button>
+          </td>`;
+        profileOrdersTable.appendChild(tr);
+      });
+    }
+
+    profileOrdersTable.addEventListener('click', (e)=>{
+      const btn = e.target.closest('button');
+      if(!btn) return;
+      const id = btn.dataset.id;
+      const action = btn.dataset.action;
+      const session = getSession();
+      const orders = loadOrders();
+      const list = orders[session] || [];
+      const idx = list.findIndex(x => x.id === id);
+      if(idx === -1) return;
+      if(action === 'del'){
+        if(confirm('Delete this order?')){
+          list.splice(idx,1);
+          orders[session] = list;
+          saveOrders(orders);
+          renderProfileOrders();
+          updateAdminData();
+        }
+      } else if(action === 'view'){
+        const o = list[idx];
+        alert(`Order: ${o.product}\nQty: ${o.qty}\nPrice: ₹ ${o.price}\nPayment: ${o.paymentMethod}\nAddress: ${o.address}\nDate: ${new Date(o.date).toLocaleString()}`);
+      }
+    });
+
+    /* ---------------------------
+       Admin app: open/close & CRUD
+       --------------------------- */
+    adminLaunchBtn.addEventListener('click', openAdminApp);
+    exitAdmin.addEventListener('click', ()=> { if(confirm('Exit admin?')) closeAdminApp(); });
+    adminLogoutBtn.addEventListener('click', ()=> { if(confirm('Logout admin?')) { clearSession(); closeAdminApp(); } });
+
+    adminNavBtns.forEach(btn => btn.addEventListener('click', ()=>{
+      adminNavBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const view = btn.dataset.view;
+      adminViews.forEach(av => av.style.display = av.getAttribute('data-admin-view') === view ? 'block' : 'none');
+    }));
+
+    function openAdminApp(){
+      adminApp.style.display = 'block';
+      document.body.style.overflow = 'hidden';
+      adminNavBtns.forEach(b => b.classList.remove('active'));
+      adminNavBtns[0].classList.add('active');
+      adminViews.forEach(av => av.style.display = av.getAttribute('data-admin-view') === 'dashboard' ? 'block' : 'none');
+      updateAdminData();
+    }
+
+    function closeAdminApp(){
+      adminApp.style.display = 'none';
+      document.body.style.overflow = '';
+      updateUIOnSession();
+      renderOffers();
+    }
+
+    function updateAdminData(){
+      const users = loadUsers();
+      const orders = loadOrders();
+      const offers = loadOffers();
+
+      const totalUsers = Object.keys(users).length;
+      const totalOrders = Object.keys(orders).reduce((acc,k) => acc + (orders[k] ? orders[k].length : 0), 0);
+      const totalOffers = offers.length;
+
+      totalUsersEl.innerText = totalUsers;
+      totalOrdersEl.innerText = totalOrders;
+      totalOffersEl.innerText = totalOffers;
+
+      // flatten orders
+      const flatOrders = [];
+      Object.keys(orders).forEach(uid => {
+        (orders[uid] || []).forEach(o => {
+          const user = users[uid] || { name: 'Unknown', email: '' };
+          flatOrders.push({ ...o, userId: uid, userName: user.name || user.email || uid });
+        });
+      });
+      flatOrders.sort((a,b)=> new Date(b.date) - new Date(a.date));
+      recentOrdersTable.innerHTML = '';
+      flatOrders.slice(0,8).forEach(o=>{
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${o.id}</td><td>${o.userName}</td><td>${o.product}</td><td>₹ ${o.price}</td><td>${new Date(o.date).toLocaleString()}</td>
+          <td>${o.paymentMethod.toUpperCase()}</td><td style="max-width:200px;word-break:break-word">${o.address}</td>
+          <td><button class="btn-ghost" data-id="${o.id}" data-uid="${o.userId}" data-action="edit">Edit</button>
+              <button class="btn-danger" data-id="${o.id}" data-uid="${o.userId}" data-action="del">Delete</button></td>`;
+        recentOrdersTable.appendChild(tr);
+      });
+
+      recentUsersTable.innerHTML = '';
+      Object.keys(users).slice(-8).reverse().forEach(k=>{
+        const u = users[k];
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${k}</td><td>${u.name}</td><td>${u.email}</td><td>${u.phone || ''}</td>
+          <td><button class="btn-ghost" data-id="${k}" data-action="view">View</button>
+              <button class="btn-danger" data-id="${k}" data-action="del">Delete</button></td>`;
+        recentUsersTable.appendChild(tr);
+      });
+
+      allUsersTable.innerHTML = '';
+      Object.keys(users).forEach(k=>{
+        const u = users[k];
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${k}</td><td contenteditable="false">${u.name}</td><td contenteditable="false">${u.email}</td><td contenteditable="false">${u.phone || ''}</td>
+          <td><button class="btn-ghost" data-id="${k}" data-action="edit">Edit</button>
+              <button class="btn-danger" data-id="${k}" data-action="del">Delete</button></td>`;
+        allUsersTable.appendChild(tr);
+      });
+
+      allOrdersTable.innerHTML = '';
+      flatOrders.forEach(o=>{
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${o.id}</td><td>${o.userName}</td><td>${o.product}</td><td>₹ ${o.price}</td><td>${new Date(o.date).toLocaleString()}</td>
+          <td>${o.paymentMethod.toUpperCase()}</td><td style="max-width:200px;word-break:break-word">${o.address}</td>
+          <td><button class="btn-ghost" data-id="${o.id}" data-uid="${o.userId}" data-action="edit">Edit</button>
+              <button class="btn-danger" data-id="${o.id}" data-uid="${o.userId}" data-action="del">Delete</button></td>`;
+        allOrdersTable.appendChild(tr);
+      });
+
+      renderAdminOffers();
+    }
+
+    recentOrdersTable.addEventListener('click', adminOrdersClick);
+    allOrdersTable.addEventListener('click', adminOrdersClick);
+
+    function adminOrdersClick(e){
+      const btn = e.target.closest('button');
+      if(!btn) return;
+      const id = btn.dataset.id;
+      const uid = btn.dataset.uid;
+      const action = btn.dataset.action;
+      const orders = loadOrders();
+      const list = orders[uid] || [];
+      const idx = list.findIndex(x=>x.id===id);
+      if(idx === -1) return;
+      if(action === 'del'){
+        if(confirm('Delete order?')){ list.splice(idx,1); orders[uid]=list; saveOrders(orders); updateAdminData(); renderOffers(); }
+      } else if(action === 'edit'){
+        const o = list[idx];
+        const pn = prompt('Product', o.product); if(pn===null) return;
+        const pr = prompt('Price', o.price); if(pr===null) return;
+        const addr = prompt('Address', o.address); if(addr===null) return;
+        const pay = prompt('Payment (upi/cod)', o.paymentMethod); if(pay===null) return;
+        o.product=pn; o.price=parseFloat(pr)||o.price; o.address=addr; o.paymentMethod = (pay==='cod'?'cod':'upi');
+        orders[uid]=list; saveOrders(orders); updateAdminData(); renderOffers();
+      }
+    }
+
+    recentUsersTable.addEventListener('click', adminUsersClick);
+    allUsersTable.addEventListener('click', adminUsersClick);
+
+    function adminUsersClick(e){
+      const btn = e.target.closest('button');
+      if(!btn) return;
+      const id = btn.dataset.id;
+      const action = btn.dataset.action;
+      let users = loadUsers();
+      if(action === 'del'){
+        if(confirm('Delete user and their orders?')){ delete users[id]; saveUsers(users); const orders=loadOrders(); delete orders[id]; saveOrders(orders); updateAdminData(); renderOffers(); }
+      } else if(action === 'edit'){
+        const u = users[id];
+        const nn = prompt('Name', u.name); if(nn===null) return;
+        const ne = prompt('Email', u.email); if(ne===null) return;
+        const np = prompt('Phone', u.phone||''); if(np===null) return;
+        u.name=nn; u.email=ne; u.phone=np; users[id]=u; saveUsers(users); updateAdminData();
+      } else if(action === 'view'){
+        const u = users[id];
+        alert(`User: ${u.name}\nEmail: ${u.email}\nPhone: ${u.phone || '(none)'}`);
+      }
+    }
+
+    addOfferAdmin.addEventListener('click', ()=>{
+      const text = (newOfferText.value || '').trim();
+      if(!text) return alert('Enter offer text');
+      const offers = loadOffers(); offers.unshift(text); saveOffers(offers); newOfferText.value=''; renderOffers(); updateAdminData();
+    });
+
+    offersTable.addEventListener('click', (e)=>{
+      const btn = e.target.closest('button');
+      if(!btn) return;
+      const idx = parseInt(btn.dataset.idx);
+      if(isNaN(idx)) return;
+      let offers = loadOffers();
+      if(btn.dataset.action === 'del'){
+        if(confirm('Delete this offer?')){ offers.splice(idx,1); saveOffers(offers); renderOffers(); renderAdminOffers(); updateAdminData(); }
+      } else if(btn.dataset.action === 'edit'){
+        const newText = prompt('Edit offer text', offers[idx]); if(newText===null) return; offers[idx]=newText; saveOffers(offers); renderOffers(); renderAdminOffers(); updateAdminData();
+      }
+    });
+
+    function renderAdminOffers(){
+      const offers = loadOffers();
+      offersTable.innerHTML = '';
+      offers.forEach((o,i)=>{
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${i+1}</td><td>${o}</td><td><button class="btn-ghost" data-idx="${i}" data-action="edit">Edit</button> <button class="btn-danger" data-idx="${i}" data-action="del">Delete</button></td>`;
+        offersTable.appendChild(tr);
+      });
+    }
+
+    /* ---------------------------
+       UI updates and bootstrap
+       --------------------------- */
+    function updateUIOnSession(){
+      const session = getSession();
+      const users = loadUsers();
+      const u = users[session];
+      if(session && u){
+        welcomePlaceholder.style.display='inline-block';
+        welcomeName.innerText = (u.name || u.email).split(' ')[0] || 'User';
+        profileBtn.style.display='inline-flex';
+        if(u.email === ADMIN_EMAIL || u.isAdmin) adminLaunchBtn.style.display='inline-flex'; else adminLaunchBtn.style.display='none';
+        authBtnText.innerText = `Logout (${(u.name||u.email).split(' ')[0]})`;
+      } else {
+        welcomePlaceholder.style.display='none';
+        profileBtn.style.display='none';
+        adminLaunchBtn.style.display='none';
+        authBtnText.innerText='Login / Signup';
+      }
+    }
+
+    authBtn.addEventListener('click', ()=> {
+      const session = getSession();
+      const users = loadUsers();
+      if(session && users[session]){
+        if(confirm('Logout now?')) { clearSession(); alert('Logged out'); }
+        return;
+      }
+      openModal(loginModal);
+    });
+
+    profileBtn.addEventListener('click', openProfileModal);
+    adminLaunchBtn.addEventListener('click', openAdminApp);
+
+    document.getElementById('leadForm').addEventListener('submit', function(e){ e.preventDefault(); this.style.display='none'; document.getElementById('thankyou').style.display='block'; });
+
+    renderOffers();
+    updateUIOnSession();
+    updateAdminData();
+
+    /* ---------------------------
+       Hearts animation + countdown (unchanged)
+       --------------------------- */
+    const canvas = document.getElementById("bgCanvas");
+    const ctx = canvas.getContext("2d");
+    function resizeCanvas(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    const hearts = [];
+    function Heart(x,y,size,speed){
+      this.x=x; this.y=y; this.size=size; this.speed=speed; this.burst=false; this.opacity=1;
+      this.update = function(){ this.y -= this.speed; if(Math.random()<0.002) this.burst=true; if(this.burst) this.opacity -= 0.05; }
+      this.draw = function(){ ctx.save(); ctx.translate(this.x,this.y); ctx.scale(this.size,this.size); ctx.globalAlpha = this.opacity; ctx.fillStyle = this.burst ? "gold" : "#ff3e8d"; ctx.beginPath(); ctx.moveTo(0,-10); ctx.bezierCurveTo(12,-25,25,-5,0,15); ctx.bezierCurveTo(-25,-5,-12,-25,0,-10); ctx.fill(); ctx.restore(); }
+    }
+    function animate(){ ctx.clearRect(0,0,canvas.width,canvas.height); if(Math.random() < 0.1) hearts.push(new Heart(Math.random()*canvas.width, canvas.height + 20, Math.random()*0.6+0.3, Math.random()*2+1)); for(let i=hearts.length-1;i>=0;i--){ hearts[i].update(); hearts[i].draw(); if(hearts[i].opacity<=0) hearts.splice(i,1); } requestAnimationFrame(animate); }
+    animate();
+
+    const countdownEl = document.getElementById('countdown');
+    const launchDate = new Date(); launchDate.setMonth(launchDate.getMonth()+6);
+    const timer = setInterval(()=>{
+      const now = new Date().getTime();
+      const distance = launchDate - now;
+      if(distance < 0){ countdownEl.innerText = "We are live!"; clearInterval(timer); } else {
+        const days = Math.floor(distance/(1000*60*60*24));
+        const hours = Math.floor((distance % (1000*60*60*24))/(1000*60*60));
+        const minutes = Math.floor((distance % (1000*60*60))/(1000*60));
+        const seconds = Math.floor((distance % (1000*60))/1000);
+        countdownEl.innerText = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+      }
+    },1000);
+    countdownEl.addEventListener('click', ()=> { const dob = prompt("🎉 Enter your favourite person's Date of Birth (YYYY-MM-DD):"); if(dob) alert("✅ Thank you! You'll get 20% OFF on their birthday month!"); });
+
+    /* ---------------------------
+       Ensure initial storage (bootstrap)
+       --------------------------- */
+    (function bootstrap(){
+      if(!localStorage.getItem(STORAGE_OFFERS)) saveOffers(loadOffers());
+      if(!localStorage.getItem(STORAGE_USERS)) saveUsers({});
+      if(!localStorage.getItem(STORAGE_ORDERS)) saveOrders({});
+      renderOffers();
+      updateAdminData();
+      updateUIOnSession();
+    })();
+
+    /* ---------------------------
+       Admin keyboard shortcut Ctrl+Alt+A (prefills admin email)
+       --------------------------- */
+    document.addEventListener('keydown', (e)=>{
+      if(e.ctrlKey && e.altKey && (e.key === 'a' || e.key === 'A')){
+        openModal(loginModal);
+        loginIdentifier.value = ADMIN_EMAIL;
+        loginPassword.focus();
+      }
+    });
+
+    /* ---------------------------
+       small helpers: enter key submit
+       --------------------------- */
+    [loginIdentifier, loginPassword].forEach(el => { if(!el) return; el.addEventListener('keydown',(e)=>{ if(e.key === 'Enter') loginBtn.click(); }); });
+
+    /* ---------------------------
+       Helper: getSession wrapper
+       --------------------------- */
+    function getSession(){ return sessionStorage.getItem(STORAGE_SESSION); }
+
+  </script>
+</body>
+</html>

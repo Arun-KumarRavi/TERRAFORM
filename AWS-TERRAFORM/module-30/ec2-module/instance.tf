@@ -29,3 +29,4 @@ module "ec2-instance" {
     Name = "custom-instance"
   }
 }
+
